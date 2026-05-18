@@ -9,24 +9,22 @@ export const initSocket = (server) => {
     cors: {
       origin: "https://e-learning-frontend-psi.vercel.app",
       methods: ["GET", "POST"],
+      credentials: true,
     },
+
+    transports: ["websocket", "polling"],
   });
 
   io.on("connection", (socket) => {
 
-    console.log(
-      "User connected:",
-      socket.id
-    );
+    console.log("User connected:", socket.id);
 
     // JOIN USER ROOM
     socket.on("join", (userId) => {
 
       socket.join(userId);
 
-      console.log(
-        `User joined room: ${userId}`
-      );
+      console.log(`User joined room: ${userId}`);
     });
 
     // SEND MESSAGE
@@ -48,11 +46,12 @@ export const initSocket = (server) => {
     });
 
     // DISCONNECT
-    socket.on("disconnect", () => {
+    socket.on("disconnect", (reason) => {
 
       console.log(
         "User disconnected:",
-        socket.id
+        socket.id,
+        reason
       );
     });
   });
