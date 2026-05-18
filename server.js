@@ -23,7 +23,7 @@ import testRoutes from "./routes/testRoutes.js";
 import progressRoutes from "./routes/progressRoutes.js";
 
 import { initSocket }
-from "./socket/socket.js";
+  from "./socket/socket.js";
 
 dotenv.config();
 
@@ -36,10 +36,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-
-      "https://e-learning-frontend-dudy.onrender.com",
+      "https://e-learning-backend-iota.vercel.app",
     ],
-
     credentials: true,
   })
 );
