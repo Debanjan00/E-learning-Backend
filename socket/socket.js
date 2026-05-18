@@ -6,25 +6,37 @@ let io;
 export const initSocket = (server) => {
 
   io = new Server(server, {
+
     cors: {
-      origin: "https://e-learning-frontend-psi.vercel.app",
+      origin:
+        "https://e-learning-frontend-psi.vercel.app",
+
       methods: ["GET", "POST"],
+
       credentials: true,
     },
 
-    transports: ["websocket", "polling"],
+    transports: ["websocket"],
+
+    pingTimeout: 60000,
+    pingInterval: 25000,
   });
 
   io.on("connection", (socket) => {
 
-    console.log("User connected:", socket.id);
+    console.log(
+      "User connected:",
+      socket.id
+    );
 
     // JOIN USER ROOM
     socket.on("join", (userId) => {
 
       socket.join(userId);
 
-      console.log(`User joined room: ${userId}`);
+      console.log(
+        `User joined room: ${userId}`
+      );
     });
 
     // SEND MESSAGE
@@ -46,14 +58,17 @@ export const initSocket = (server) => {
     });
 
     // DISCONNECT
-    socket.on("disconnect", (reason) => {
+    socket.on(
+      "disconnect",
+      (reason) => {
 
-      console.log(
-        "User disconnected:",
-        socket.id,
-        reason
-      );
-    });
+        console.log(
+          "User disconnected:",
+          socket.id,
+          reason
+        );
+      }
+    );
   });
 };
 

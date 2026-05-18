@@ -19,6 +19,7 @@ import instructorRoutes from "./routes/instructorRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
 
 import errorHandler from "./middleware/errorMiddleware.js";
+
 import testRoutes from "./routes/testRoutes.js";
 import progressRoutes from "./routes/progressRoutes.js";
 
@@ -29,6 +30,9 @@ dotenv.config();
 
 const app = express();
 
+// CONNECT DATABASE
+connectDB();
+
 // MIDDLEWARE
 app.use(express.json());
 
@@ -36,8 +40,17 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
+
       "https://e-learning-frontend-psi.vercel.app",
     ],
+
+    methods: [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE",
+    ],
+
     credentials: true,
   })
 );
@@ -45,6 +58,7 @@ app.use(
 // STATIC UPLOADS
 app.use(
   "/uploads",
+
   express.static(
     path.join(
       process.cwd(),
@@ -125,19 +139,17 @@ app.get("/", (req, res) => {
   res.send(
     "🚀 API is running..."
   );
+
 });
 
 // ERROR HANDLER
 app.use(errorHandler);
 
-// CONNECT DB
-connectDB();
-
-// CREATE SERVER
+// CREATE HTTP SERVER
 const server =
   http.createServer(app);
 
-// SOCKET
+// INIT SOCKET
 initSocket(server);
 
 // PORT
@@ -148,6 +160,7 @@ const PORT =
 server.listen(PORT, () => {
 
   console.log(
-    `🔥 Server running on http://localhost:${PORT}`
+    `🔥 Server running on port ${PORT}`
   );
+
 });
