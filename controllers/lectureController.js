@@ -7,8 +7,7 @@ export const createLecture = async (
 ) => {
   try {
 
-    const { title } =
-      req.body;
+    const { title } = req.body;
 
     const courseId =
       req.params.courseId;
@@ -22,13 +21,9 @@ export const createLecture = async (
       });
     }
 
-    // VIDEO URL
+    // CLOUDINARY VIDEO URL
     const videoUrl =
-      `${req.protocol}://${req.get(
-        "host"
-      )}/uploads/videos/${
-        req.file.filename
-      }`;
+      req.file.path;
 
     // CREATE LECTURE
     const lecture =
