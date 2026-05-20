@@ -76,6 +76,8 @@ export const getMyCourses = async (
 
   } catch (error) {
 
+    console.log(error);
+
     res.status(500).json({
       message:
         error.message,
@@ -90,6 +92,7 @@ export const updateProfile = async (
 ) => {
   try {
 
+    // FIND USER
     const user =
       await User.findById(
         req.user._id
@@ -110,35 +113,50 @@ export const updateProfile = async (
 
     // UPDATE NAME
     if (name) {
+
       user.name = name;
     }
 
     // UPDATE BIO
     if (bio) {
+
       user.bio = bio;
     }
 
     // UPDATE IMAGE
     if (req.file) {
 
+      console.log(
+        "Uploaded File:",
+        req.file
+      );
+
+      // CLOUDINARY IMAGE URL
       user.image =
-        `${req.protocol}://${req.get(
-          "host"
-        )}/uploads/profile/${
-          req.file.filename
-        }`;
+        req.file.path;
     }
 
+    // SAVE USER
     await user.save();
 
-    res.json({
+    // GET UPDATED USER
+    const updatedUser =
+      await User.findById(
+        req.user._id
+      );
+
+    res.status(200).json({
+
       message:
         "Profile updated successfully",
 
-      user,
+      user:
+        updatedUser,
     });
 
   } catch (error) {
+
+    console.log(error);
 
     res.status(500).json({
       message:
