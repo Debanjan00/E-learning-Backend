@@ -21,26 +21,47 @@ const storage = new CloudinaryStorage({
     return {
       folder,
       resource_type: "auto",
-      public_id: Date.now() + "-" + file.originalname,
+      public_id:
+        Date.now() +
+        "-" +
+        file.originalname,
     };
   },
 });
 
 // FILE FILTER
-const fileFilter = (req, file, cb) => {
+const fileFilter = (
+  req,
+  file,
+  cb
+) => {
+
   // ALLOW IMAGES
-  if (file.mimetype.startsWith("image/")) {
+  if (
+    file.mimetype.startsWith(
+      "image/"
+    )
+  ) {
+
     cb(null, true);
   }
 
   // ALLOW VIDEOS
-  else if (file.mimetype.startsWith("video/")) {
+  else if (
+    file.mimetype.startsWith(
+      "video/"
+    )
+  ) {
+
     cb(null, true);
   }
 
   else {
+
     cb(
-      new Error("Only image and video files allowed"),
+      new Error(
+        "Only image and video files allowed"
+      ),
       false
     );
   }
@@ -48,7 +69,15 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
   storage,
+
   fileFilter,
+
+  limits: {
+    fileSize:
+      500 *
+      1024 *
+      1024, // 500MB
+  },
 });
 
 export default upload;
